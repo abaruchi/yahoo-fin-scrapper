@@ -79,7 +79,7 @@ public class Crypto {
         this.currency = Currency.valueOf(currency);
     }
 
-    void setLastUpdated(Clock clock) {
+    public void setLastUpdated(Clock clock) {
         this.last_updated = LocalDateTime.now(clock);
     }
 }
