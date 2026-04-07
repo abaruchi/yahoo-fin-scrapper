@@ -1,18 +1,20 @@
-package com.yahoo_fin.scrapper.crypto;
+package com.yahoo_fin.scrapper.asset.crypto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
+import java.time.Clock;
 import java.util.Optional;
 
 @RestController
 class CryptoRestController {
     private final CryptoRepository cryptoRepository;
+    private final Clock clock;
 
-    public CryptoRestController(CryptoRepository cryptoRepository) {
+    public CryptoRestController(CryptoRepository cryptoRepository, Clock clock) {
         this.cryptoRepository = cryptoRepository;
+        this.clock = clock;
         populateCrypto();
     }
 
@@ -28,7 +30,8 @@ class CryptoRestController {
             Crypto crypto = new Crypto(
                     request.getName(),
                     request.getPrice(),
-                    request.getCurrency()
+                    request.getCurrency(),
+                    this.clock
             );
             cryptoRepository.save(crypto);
             return new ResponseEntity<>(crypto, HttpStatus.CREATED);
@@ -39,7 +42,7 @@ class CryptoRestController {
 
         Crypto existingCrypto = existing.get();
         existingCrypto.setPrice(price_integer, price_decimal);
-        existingCrypto.setLastUpdated(Instant.now());
+        existingCrypto.setLastUpdated(this.clock);
         existingCrypto = cryptoRepository.save(existingCrypto);
         return new ResponseEntity<>(existingCrypto, HttpStatus.OK);
     }
@@ -51,8 +54,8 @@ class CryptoRestController {
     }
 
     private void populateCrypto() {
-        Crypto bitcoin = new Crypto("Bitcoin", 10000, 0, "USD");
-        Crypto ethereum = new Crypto("Ethereum", 1000, 0, "USD");
+        Crypto bitcoin = new Crypto("Bitcoin", 10000, 0, "USD", this.clock);
+        Crypto ethereum = new Crypto("Ethereum", 1000, 0, "USD", this.clock);
 
         if (cryptoRepository.findByNameEqualsIgnoreCase(bitcoin.getName()) == null) {
             cryptoRepository.save(bitcoin);

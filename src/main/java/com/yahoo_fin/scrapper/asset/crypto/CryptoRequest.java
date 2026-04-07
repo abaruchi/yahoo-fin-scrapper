@@ -1,4 +1,4 @@
-package com.yahoo_fin.scrapper.crypto;
+package com.yahoo_fin.scrapper.asset.crypto;
 
 public class CryptoRequest {
     private String name;

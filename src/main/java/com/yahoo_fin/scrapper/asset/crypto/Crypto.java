@@ -1,7 +1,8 @@
-package com.yahoo_fin.scrapper.crypto;
+package com.yahoo_fin.scrapper.asset.crypto;
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.time.Clock;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -22,31 +23,30 @@ public class Crypto {
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
-    private Instant last_updated;
+    private LocalDateTime last_updated;
 
     public enum Currency {
         USD,
         AUD,
-        EUR,
         BRL
     }
 
     public Crypto() {}
-    public Crypto(String name, int price_integer, int price_decimal, String currency) {
+    public Crypto(String name, int price_integer, int price_decimal, String currency, Clock clock) {
         this.name = name;
         this.price_integer = price_integer;
         this.price_decimal = price_decimal;
         this.currency = Currency.valueOf(currency);
-        this.last_updated = Instant.now();
+        this.setLastUpdated(clock);
     }
 
-    public Crypto(String name, String price, String currency) {
+    public Crypto(String name, String price, String currency, Clock clock) {
         this.name = name;
         String[] priceParts = price.split("\\.");
         this.price_integer = Integer.parseInt(priceParts[0]);
         this.price_decimal = Integer.parseInt(priceParts[1]);
         this.currency = Currency.valueOf(currency);
-        this.last_updated = Instant.now();
+        this.setLastUpdated(clock);
     }
 
     public String getName() {
@@ -55,6 +55,7 @@ public class Crypto {
 
     public void setId(Long id) {
         this.id = id;
+
     }
 
     public String getPrice() {
@@ -65,7 +66,7 @@ public class Crypto {
         return currency.toString();
     }
 
-    public Instant getLastUpdated() {
+    public LocalDateTime getLastUpdated() {
         return last_updated;
     }
 
@@ -78,7 +79,7 @@ public class Crypto {
         this.currency = Currency.valueOf(currency);
     }
 
-    public void setLastUpdated(Instant last_updated) {
-        this.last_updated = last_updated;
+    void setLastUpdated(Clock clock) {
+        this.last_updated = LocalDateTime.now(clock);
     }
 }
