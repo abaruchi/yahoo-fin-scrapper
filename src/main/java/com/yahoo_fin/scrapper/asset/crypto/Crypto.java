@@ -1,10 +1,14 @@
 package com.yahoo_fin.scrapper.asset.crypto;
+import com.yahoo_fin.scrapper.types.MonetaryValue;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
 @Entity
 @Table(
         name = "crypto",
@@ -18,8 +22,7 @@ public class Crypto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int price_integer;
-    private int price_decimal;
+    private double price;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
@@ -32,34 +35,16 @@ public class Crypto {
     }
 
     public Crypto() {}
-    public Crypto(String name, int price_integer, int price_decimal, String currency, Clock clock) {
+
+    public Crypto(String name, MonetaryValue price, String currency, Clock clock) {
         this.name = name;
-        this.price_integer = price_integer;
-        this.price_decimal = price_decimal;
+        this.price = price.getValue();
         this.currency = Currency.valueOf(currency);
         this.setLastUpdated(clock);
     }
 
-    public Crypto(String name, String price, String currency, Clock clock) {
-        this.name = name;
-        String[] priceParts = price.split("\\.");
-        this.price_integer = Integer.parseInt(priceParts[0]);
-        this.price_decimal = Integer.parseInt(priceParts[1]);
-        this.currency = Currency.valueOf(currency);
-        this.setLastUpdated(clock);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-
-    }
-
-    public String getPrice() {
-        return price_integer + "." + price_decimal;
+    public MonetaryValue getPrice() {
+        return new MonetaryValue(price);
     }
 
     public String getCurrency() {
@@ -70,9 +55,8 @@ public class Crypto {
         return last_updated;
     }
 
-    public void setPrice(int price_integer, int price_decimal) {
-        this.price_integer = price_integer;
-        this.price_decimal = price_decimal;
+    public void setPrice(MonetaryValue price) {
+        this.price = price.getValue();
     }
 
     public void setCurrency(String currency) {

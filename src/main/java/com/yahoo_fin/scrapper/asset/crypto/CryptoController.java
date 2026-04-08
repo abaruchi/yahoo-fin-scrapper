@@ -1,5 +1,6 @@
 package com.yahoo_fin.scrapper.asset.crypto;
 
+import com.yahoo_fin.scrapper.types.MonetaryValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,6 @@ class CryptoRestController {
     public CryptoRestController(CryptoRepository cryptoRepository, Clock clock) {
         this.cryptoRepository = cryptoRepository;
         this.clock = clock;
-        populateCrypto();
     }
 
     @RequestMapping(value = "/crypto", method = RequestMethod.GET)
@@ -29,19 +29,15 @@ class CryptoRestController {
         if (existing.isEmpty()) {
             Crypto crypto = new Crypto(
                     request.getName(),
-                    request.getPrice(),
+                    new MonetaryValue(request.getPrice()),
                     request.getCurrency(),
                     this.clock
             );
             cryptoRepository.save(crypto);
             return new ResponseEntity<>(crypto, HttpStatus.CREATED);
         }
-        String[] parts = request.getPrice().split("\\.");
-        int price_integer = Integer.parseInt(parts[0]);
-        int price_decimal = Integer.parseInt(parts[1]);
-
         Crypto existingCrypto = existing.get();
-        existingCrypto.setPrice(price_integer, price_decimal);
+        existingCrypto.setPrice(new MonetaryValue(request.getPrice()));
         existingCrypto.setLastUpdated(this.clock);
         existingCrypto = cryptoRepository.save(existingCrypto);
         return new ResponseEntity<>(existingCrypto, HttpStatus.OK);
@@ -51,17 +47,5 @@ class CryptoRestController {
         Crypto crypto = cryptoRepository.findByNameEqualsIgnoreCase(name);
         if (crypto == null) return Optional.empty();
         return Optional.of(crypto);
-    }
-
-    private void populateCrypto() {
-        Crypto bitcoin = new Crypto("Bitcoin", 10000, 0, "USD", this.clock);
-        Crypto ethereum = new Crypto("Ethereum", 1000, 0, "USD", this.clock);
-
-        if (cryptoRepository.findByNameEqualsIgnoreCase(bitcoin.getName()) == null) {
-            cryptoRepository.save(bitcoin);
-        }
-        if (cryptoRepository.findByNameEqualsIgnoreCase(ethereum.getName()) == null) {
-            cryptoRepository.save(ethereum);
-        }
     }
 }
