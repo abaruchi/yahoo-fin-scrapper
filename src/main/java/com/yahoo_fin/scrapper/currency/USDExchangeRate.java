@@ -1,6 +1,5 @@
 package com.yahoo_fin.scrapper.currency;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class USDExchangeRate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double rate_integer;
+    private double rateInteger;
     private LocalDateTime timestamp;
 
     @ManyToOne
@@ -31,8 +30,12 @@ public class USDExchangeRate {
 
     public USDExchangeRate() {}
 
-    public USDExchangeRate(double rate_integer, LocalDateTime timestamp, Currency currency) {
-        this.rate_integer = rate_integer;
+    public double getRateInteger() {
+        return rateInteger;
+    }
+
+    public USDExchangeRate(double rateInteger, LocalDateTime timestamp, Currency currency) {
+        this.rateInteger = rateInteger;
         this.timestamp = timestamp;
         this.currency = currency;
     }

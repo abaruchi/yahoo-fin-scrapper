@@ -73,12 +73,12 @@ class ExchangeRateTest {
         MonetaryValue amount = new MonetaryValue(100.0);
         MonetaryValue convertedBRToUSD = exchangeRate.calculateFromUSD(brCurrency, amount);
         assertEquals(1886, convertedBRToUSD.getNormalisedValue());
-        assertEquals(100 / brlExchangeRateDayThree.getRate_integer(), convertedBRToUSD.getRawValue());
+        assertEquals(100 / brlExchangeRateDayThree.getRateInteger(), convertedBRToUSD.getRawValue());
 
         amount = new MonetaryValue(100.0);
         MonetaryValue convertedUKToUSD = exchangeRate.calculateFromUSD(ukCurrency, amount);
         assertEquals(7692, convertedUKToUSD.getNormalisedValue());
-        assertEquals(100 / usdExchangeRateDayThree.getRate_integer(), convertedUKToUSD.getRawValue());
+        assertEquals(100 / usdExchangeRateDayThree.getRateInteger(), convertedUKToUSD.getRawValue());
     }
 
     @Test
@@ -86,7 +86,7 @@ class ExchangeRateTest {
         MonetaryValue amount = new MonetaryValue(100.0);
         MonetaryValue convertedBRLToUK = exchangeRate.calculate(brCurrency, ukCurrency, amount);
         assertEquals(2451, convertedBRLToUK.getNormalisedValue());
-        assertEquals(18.86 * usdExchangeRateDayThree.getRate_integer(), convertedBRLToUK.getRawValue());
+        assertEquals(18.86 * usdExchangeRateDayThree.getRateInteger(), convertedBRLToUK.getRawValue());
     }
 
     @Test
@@ -94,7 +94,7 @@ class ExchangeRateTest {
         MonetaryValue amount = new MonetaryValue(100.0);
         MonetaryValue convertedUSDToBRL = exchangeRate.calculateFromUSDWithDateTime(brCurrency, amount, dayTwo);
         assertEquals(1904, convertedUSDToBRL.getNormalisedValue());
-        assertEquals(100 / brlExchangeRateDayTwo.getRate_integer(), convertedUSDToBRL.getRawValue());
+        assertEquals(100 / brlExchangeRateDayTwo.getRateInteger(), convertedUSDToBRL.getRawValue());
     }
 
     @Test
@@ -102,6 +102,6 @@ class ExchangeRateTest {
         MonetaryValue amount = new MonetaryValue(100.0);
         MonetaryValue convertedUSDToBRL = exchangeRate.calculateFromUSDWithDateTime(brCurrency, amount, dayOne);
         assertEquals(1923, convertedUSDToBRL.getNormalisedValue());
-        assertEquals(100 / brlExchangeRateDayOne.getRate_integer(), convertedUSDToBRL.getRawValue());
+        assertEquals(100 / brlExchangeRateDayOne.getRateInteger(), convertedUSDToBRL.getRawValue());
     }
 }
