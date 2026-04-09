@@ -23,10 +23,17 @@ public class USDExchangeRate {
     private Long id;
 
     private double rate_integer;
-    private double decimal_rate;
     private LocalDateTime timestamp;
 
     @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
+
+    public USDExchangeRate() {}
+
+    public USDExchangeRate(double rate_integer, LocalDateTime timestamp, Currency currency) {
+        this.rate_integer = rate_integer;
+        this.timestamp = timestamp;
+        this.currency = currency;
+    }
 }

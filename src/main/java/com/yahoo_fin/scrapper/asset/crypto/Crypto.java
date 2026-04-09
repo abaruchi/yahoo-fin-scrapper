@@ -38,7 +38,7 @@ public class Crypto {
 
     public Crypto(String name, MonetaryValue price, String currency, Clock clock) {
         this.name = name;
-        this.price = price.getValue();
+        this.price = price.getRawValue();
         this.currency = Currency.valueOf(currency);
         this.setLastUpdated(clock);
     }
@@ -56,7 +56,7 @@ public class Crypto {
     }
 
     public void setPrice(MonetaryValue price) {
-        this.price = price.getValue();
+        this.price = price.getRawValue();
     }
 
     public void setCurrency(String currency) {

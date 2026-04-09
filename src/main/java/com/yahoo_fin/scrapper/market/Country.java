@@ -26,4 +26,19 @@ public class Country {
 
     @OneToOne(mappedBy = "country", cascade = CascadeType.ALL)
     private Currency currency;
+
+    public Country() {}
+
+    public Country(String countryName, String countryCode) {
+        this.name = countryName;
+        this.code = countryCode;
+    }
+
+    public void addMarket(Market market) {
+        markets.add(market);
+    }
+
+    public void removeMarket(Market market) {
+        markets.remove(market);
+    }
 }
