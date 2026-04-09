@@ -27,4 +27,20 @@ public class Currency {
 
     @OneToMany(mappedBy = "currency")
     private List<USDExchangeRate> exchangeRates;
+
+    public Currency() {}
+
+    public Currency(String name, String code, Country country) {
+        this.name = name;
+        this.code = code;
+        this.country = country;
+    }
+
+    public void addExchangeRate(USDExchangeRate exchangeRate) {
+        exchangeRates.add(exchangeRate);
+    }
+
+    public void removeExchangeRate(USDExchangeRate exchangeRate) {
+        exchangeRates.remove(exchangeRate);
+    }
 }

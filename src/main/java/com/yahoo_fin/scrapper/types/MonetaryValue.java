@@ -1,42 +1,47 @@
 package com.yahoo_fin.scrapper.types;
 
-public class MonetaryValue {
-    private final int normalised_value;
-    private final double value;
+import java.util.Locale;
 
-    public MonetaryValue(double value) {
-        this.value = value;
-        this.normalised_value = (int) (value * Math.pow(10, 2));
+public class MonetaryValue {
+    private final int normalisedValue;
+    private final double rawValue;
+    private final Locale currLocale = java.util.Locale.US;
+    private final int powerOfTen = 2;
+
+    public MonetaryValue(double rawValue) {
+        this.rawValue = rawValue;
+        this.normalisedValue = (int) (rawValue * Math.pow(10, powerOfTen));
     }
 
-    public MonetaryValue(String sValue) {
+    public MonetaryValue(String sValue) throws IllegalArgumentException {
         try {
-            this.value = Double.parseDouble(sValue);
+            this.rawValue = Double.parseDouble(sValue);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid monetary value format: " + sValue, e);
         }
-        this.normalised_value = (int) (this.value * Math.pow(10, 2));
+        this.normalisedValue = (int) (this.rawValue * Math.pow(10, powerOfTen));
     }
 
-    public double getValue() {
-        return value;
+    public double getRawValue() {
+        return rawValue;
     }
 
     public int getNormalisedValue() {
-        return normalised_value;
+        return normalisedValue;
     }
 
     public String toString() {
-        return String.valueOf(value);
+        double valueTruncated = (normalisedValue / Math.pow(10, powerOfTen));
+        return String.format(currLocale, "%.2f", valueTruncated);
     }
 
     public MonetaryValue add(MonetaryValue other) {
-        int result = this.normalised_value + other.normalised_value;
-        return new MonetaryValue((double)result/100);
+        int result = this.normalisedValue + other.normalisedValue;
+        return new MonetaryValue((double)result/ Math.pow(10, powerOfTen));
     }
 
     public MonetaryValue add(double factor) {
-        double result = this.normalised_value + factor;
+        double result = this.normalisedValue + factor;
         return new MonetaryValue(result);
     }
 
@@ -46,8 +51,18 @@ public class MonetaryValue {
     }
 
     public MonetaryValue multiply(MonetaryValue other) {
-        int interResult = this.normalised_value * other.normalised_value;
-        double decimalResult = (interResult / Math.pow(10, 4));
+        int interResult = this.normalisedValue * other.normalisedValue;
+        double decimalResult = (interResult / Math.pow(10, powerOfTen*2));
         return new MonetaryValue(decimalResult);
+    }
+
+    public MonetaryValue divide(double factor) {
+        MonetaryValue other = new MonetaryValue(factor);
+        return this.divide(other);
+    }
+
+    public MonetaryValue divide(MonetaryValue other) {
+        double result = this.rawValue / other.rawValue;
+        return new MonetaryValue(result);
     }
 }
