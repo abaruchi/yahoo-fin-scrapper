@@ -37,14 +37,14 @@ class MonetaryValueTest {
         MonetaryValue value2 = new MonetaryValue(1.40);
         MonetaryValue result = value1.add(value2);
         assertEquals(260, result.getNormalisedValue());
-        assertEquals("2.6", result.toString());
+        assertEquals("2.60", result.toString());
         assertEquals(2.6, result.getRawValue());
 
         value1 = new MonetaryValue(1.80);
         value2 = new MonetaryValue(1.40);
         result = value1.add(value2);
         assertEquals(320, result.getNormalisedValue());
-        assertEquals("3.2", result.toString());
+        assertEquals("3.20", result.toString());
         assertEquals(3.2, result.getRawValue());
     }
 
@@ -59,7 +59,7 @@ class MonetaryValueTest {
 
         result = value1.multiply(0.5);
         assertEquals(60, result.getNormalisedValue());
-        assertEquals("0.6", result.toString());
+        assertEquals("0.60", result.toString());
         assertEquals(0.6, result.getRawValue());
     }
 
