@@ -22,7 +22,7 @@ public class ExchangeRate  implements ExchangeRateCalculator{
         if (recentExchangeRate.isEmpty()) {
             return new MonetaryValue(0.0);
         }
-        MonetaryValue targetInUSD = new MonetaryValue(recentExchangeRate.get().getRate_integer());
+        MonetaryValue targetInUSD = new MonetaryValue(recentExchangeRate.get().getRateInteger());
         return sourceInUSD.multiply(targetInUSD);
     }
 
@@ -32,17 +32,17 @@ public class ExchangeRate  implements ExchangeRateCalculator{
         if (recentExchangeRate.isEmpty()) {
             return new MonetaryValue(0.0);
         }
-        MonetaryValue usdExchangeRate = new MonetaryValue(recentExchangeRate.get().getRate_integer());
+        MonetaryValue usdExchangeRate = new MonetaryValue(recentExchangeRate.get().getRateInteger());
         return amount.divide(usdExchangeRate);
     }
 
     @Override
-    public MonetaryValue calculateFromUSDWithDateTime(Currency target, MonetaryValue amount,LocalDateTime targetDate) {
+    public MonetaryValue calculateFromUSDWithDateTime(Currency target, MonetaryValue amount, LocalDateTime targetDate) {
         Optional<USDExchangeRate> recentExchangeRate = exchangeRateRepository.findFirstByCurrencyAndTimestampLessThanEqualOrderByTimestampDesc(target, targetDate);
         if (recentExchangeRate.isEmpty()) {
             return new MonetaryValue(0.0);
         }
-        MonetaryValue usdExchangeRate = new MonetaryValue(recentExchangeRate.get().getRate_integer());
+        MonetaryValue usdExchangeRate = new MonetaryValue(recentExchangeRate.get().getRateInteger());
         return amount.divide(usdExchangeRate);
     }
 }
