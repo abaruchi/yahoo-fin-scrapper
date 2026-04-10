@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,6 +29,9 @@ public class Crypto {
     @Enumerated(EnumType.STRING)
     private Currency currency;
     private LocalDateTime last_updated;
+
+    @OneToMany(mappedBy = "crypto")
+    private List<CryptoPrice> cryptoPrices = new ArrayList<>();
 
     public enum Currency {
         USD,

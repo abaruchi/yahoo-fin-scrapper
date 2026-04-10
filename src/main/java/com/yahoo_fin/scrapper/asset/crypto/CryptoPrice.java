@@ -1,4 +1,4 @@
-package com.yahoo_fin.scrapper.asset.stock;
+package com.yahoo_fin.scrapper.asset.crypto;
 
 
 import jakarta.persistence.*;
@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "stock_price")
-public class StockPrice {
-
+@Table(name = "crypto_price")
+public class CryptoPrice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private double priceUSD;
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "stock_id")
-    private Stock stock;
+    @JoinColumn(name = "crypto_id")
+    private Crypto crypto;
 }
