@@ -1,6 +1,7 @@
 package com.yahoo_fin.scrapper.market;
 
 
+import com.yahoo_fin.scrapper.asset.stock.Stock;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,8 @@ public class Market {
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    @OneToOne
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 }
