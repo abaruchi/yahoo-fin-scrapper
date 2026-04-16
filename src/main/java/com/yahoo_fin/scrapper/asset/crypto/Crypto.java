@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class Crypto {
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
-    private LocalDateTime last_updated;
+    private LocalDateTime lastUpdate;
 
     @OneToMany(mappedBy = "crypto")
     private List<CryptoPrice> cryptoPrices = new ArrayList<>();
@@ -41,11 +40,11 @@ public class Crypto {
 
     public Crypto() {}
 
-    public Crypto(String name, MonetaryValue price, String currency, Clock clock) {
+    public Crypto(String name, MonetaryValue price, String currency, LocalDateTime lastUpdate) {
         this.name = name;
         this.price = price.getRawValue();
         this.currency = Currency.valueOf(currency);
-        this.setLastUpdated(clock);
+        this.lastUpdate = lastUpdate;
     }
 
     public MonetaryValue getPrice() {
@@ -57,7 +56,7 @@ public class Crypto {
     }
 
     public LocalDateTime getLastUpdated() {
-        return last_updated;
+        return lastUpdate;
     }
 
     public void setPrice(MonetaryValue price) {
@@ -68,7 +67,7 @@ public class Crypto {
         this.currency = Currency.valueOf(currency);
     }
 
-    public void setLastUpdated(Clock clock) {
-        this.last_updated = LocalDateTime.now(clock);
+    public void setLastUpdated(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

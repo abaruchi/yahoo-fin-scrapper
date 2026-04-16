@@ -5,17 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
 class CryptoRestController {
     private final CryptoRepository cryptoRepository;
-    private final Clock clock;
 
-    public CryptoRestController(CryptoRepository cryptoRepository, Clock clock) {
+    public CryptoRestController(CryptoRepository cryptoRepository) {
         this.cryptoRepository = cryptoRepository;
-        this.clock = clock;
     }
 
     @RequestMapping(value = "/crypto", method = RequestMethod.GET)
@@ -31,14 +29,14 @@ class CryptoRestController {
                     request.getName(),
                     new MonetaryValue(request.getPrice()),
                     request.getCurrency(),
-                    this.clock
+                    LocalDateTime.now()
             );
             cryptoRepository.save(crypto);
             return new ResponseEntity<>(crypto, HttpStatus.CREATED);
         }
         Crypto existingCrypto = existing.get();
         existingCrypto.setPrice(new MonetaryValue(request.getPrice()));
-        existingCrypto.setLastUpdated(this.clock);
+        existingCrypto.setLastUpdated(LocalDateTime.now());
         existingCrypto = cryptoRepository.save(existingCrypto);
         return new ResponseEntity<>(existingCrypto, HttpStatus.OK);
     }
