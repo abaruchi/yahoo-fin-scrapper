@@ -19,7 +19,7 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String companyName;
-    private String code;
+    private String companyTicker;
 
     @OneToOne(mappedBy = "stock", cascade = CascadeType.ALL)
     private Market market;
@@ -28,10 +28,9 @@ public class Stock {
     private List<StockPrice> stockPrices = new ArrayList<>();
 
     public Stock() {}
-    public Stock(String companyName, String code, Market market) {
+    public Stock(String companyName, String companyTicker, Market market) {
         this.companyName = companyName;
-        this.code = code;
+        this.companyTicker = companyTicker;
         this.market = market;
     }
-
 }

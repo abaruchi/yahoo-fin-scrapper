@@ -20,8 +20,6 @@ public class Market {
     private Long id;
     private String name;
     private String code;
-    private LocalDateTime open_at;
-    private LocalDateTime close_at;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
@@ -30,4 +28,17 @@ public class Market {
     @OneToOne
     @JoinColumn(name = "stock_id")
     private Stock stock;
+
+    public Market(String name, String code, Country country) {
+        this.name = name;
+        this.code = code;
+        this.country = country;
+    }
+
+    public Market(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
+    public Market() {}
 }
