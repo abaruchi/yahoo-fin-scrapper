@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StockRepository  extends JpaRepository<Stock, Long> {
     Stock findByCompanyNameEqualsIgnoreCase(String name);
-    Stock findByCodeEqualsIgnoreCase(String symbol);
+    Stock findByCompanyTickerEqualsIgnoreCase(String symbol);
     Stock findByMarket(Market market);
 }
