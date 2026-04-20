@@ -39,8 +39,32 @@ public class Currency {
     public void addExchangeRate(USDExchangeRate exchangeRate) {
         exchangeRates.add(exchangeRate);
     }
-
     public void removeExchangeRate(USDExchangeRate exchangeRate) {
         exchangeRates.remove(exchangeRate);
     }
+
+    public String getCode() {
+        return code;
+    }
+    public String getName() {
+        return name;
+    }
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCurrency(String currency) {
+        this.code = currency;
+    }
+
 }
