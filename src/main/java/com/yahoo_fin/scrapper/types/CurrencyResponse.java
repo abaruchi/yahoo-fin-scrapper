@@ -10,18 +10,22 @@ public class CurrencyResponse {
     private final LocalDateTime timestamp;
     private boolean isClose = false;
 
-    CurrencyResponse(String currencyName, String currencyCode, MonetaryValue exchangeRateToUSD, LocalDateTime timestamp) {
+    public CurrencyResponse(String currencyName, String currencyCode, MonetaryValue exchangeRateToUSD, LocalDateTime timestamp) {
         this.currencyName = currencyName;
         this.currencyCode = currencyCode;
         this.exchangeRateToUSD = exchangeRateToUSD;
         this.timestamp = timestamp;
     }
 
-    CurrencyResponse(String currencyName, String currencyCode, MonetaryValue exchangeRateToUSD) {
+    public CurrencyResponse(String currencyName, String currencyCode, MonetaryValue exchangeRateToUSD) {
         this.currencyName = currencyName;
         this.currencyCode = currencyCode;
         this.exchangeRateToUSD = exchangeRateToUSD;
         this.timestamp = LocalDateTime.now();
+    }
+
+    public static CurrencyResponse emptyCurrencyResponse() {
+        return new CurrencyResponse("", "", new MonetaryValue(0));
     }
 
     public String getCurrencyName() {
