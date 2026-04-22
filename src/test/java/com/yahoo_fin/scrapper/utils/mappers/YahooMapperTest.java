@@ -110,7 +110,7 @@ class YahooMapperTest {
         assertEquals(1, priceResponse.size());
         assertEquals("AAPL", priceResponse.getFirst().getAssetCode());
         assertEquals("EQUITY", priceResponse.getFirst().getAssetName());
-        assertEquals("2024-03-10T03:00", priceResponse.getFirst().getTimestamp().toString());
+        assertEquals("2024-03-09T16:00", priceResponse.getFirst().getTimestamp().toString());
         assertEquals(180.5, priceResponse.getFirst().getPrice().getRawValue());
     }
 
@@ -144,7 +144,7 @@ class YahooMapperTest {
         assertEquals(3, priceResponse.size());
         assertEquals("BTC-US", priceResponse.get(2).getAssetCode());
         assertEquals("CRYPTOCURRENCY", priceResponse.get(2).getAssetName());
-        assertEquals("2025-10-23T10:00", priceResponse.get(2).getTimestamp().toString());
+        assertEquals("2025-10-22T23:00", priceResponse.get(2).getTimestamp().toString());
         assertEquals(181.20, priceResponse.get(2).getPrice().getRawValue());
     }
 

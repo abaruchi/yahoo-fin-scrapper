@@ -52,7 +52,7 @@ public class YahooMapper {
                     price,
                     assetCode,
                     responseType.getValue(),
-                    LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault()));
+                    LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.of("UTC")));
             priceResponses.add(priceResponse);
             tsIndex++;
         }
