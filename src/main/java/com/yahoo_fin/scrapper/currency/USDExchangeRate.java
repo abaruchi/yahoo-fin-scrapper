@@ -1,5 +1,6 @@
 package com.yahoo_fin.scrapper.currency;
 
+import com.yahoo_fin.scrapper.types.PriceResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,4 +36,17 @@ public class USDExchangeRate {
         this.timestamp = timestamp;
         this.currency = currency;
     }
+
+    public static USDExchangeRate nullUSDExchangeRate() {
+        return new USDExchangeRate(0, LocalDateTime.MIN, null);
+    }
+
+    public static USDExchangeRate fromPriceResponse(PriceResponse priceResponse, Currency currency) {
+        return new USDExchangeRate(
+                priceResponse.getPrice().getNormalisedValue(),
+                priceResponse.getTimestamp(),
+                currency
+        );
+    }
+
 }

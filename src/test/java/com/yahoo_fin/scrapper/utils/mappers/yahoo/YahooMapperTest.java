@@ -1,4 +1,4 @@
-package com.yahoo_fin.scrapper.utils.mappers;
+package com.yahoo_fin.scrapper.utils.mappers.yahoo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

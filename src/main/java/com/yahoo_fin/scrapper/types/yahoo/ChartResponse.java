@@ -38,4 +38,3 @@ public class ChartResponse {
         private List<Double> close;
     }
 }
-

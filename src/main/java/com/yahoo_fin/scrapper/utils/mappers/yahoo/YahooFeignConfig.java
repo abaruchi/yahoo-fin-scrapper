@@ -1,4 +1,4 @@
-package com.yahoo_fin.scrapper.utils;
+package com.yahoo_fin.scrapper.utils.mappers.yahoo;
 
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
