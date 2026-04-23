@@ -29,10 +29,6 @@ public class CurrencyResponse {
         this.timestamp = LocalDateTime.now();
     }
 
-    public static CurrencyResponse emptyCurrencyResponse() {
-        return new CurrencyResponse("", "", new MonetaryValue(0));
-    }
-
     public String getCurrencyName() {
         return currencyName;
     }

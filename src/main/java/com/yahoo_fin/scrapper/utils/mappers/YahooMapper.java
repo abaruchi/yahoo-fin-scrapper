@@ -35,6 +35,10 @@ public class YahooMapper {
             assetCode = getCurrencyCodeFromShortName(assetCode);
         }
 
+        if (responseType == InstrumentType.CRYPTOCURRENCY) {
+            assetCode = getCryptoCodeFromSymbol(chartResponse.getChart().getResult().getFirst().getMeta().getSymbol());
+        }
+
         List<Long> timestamps = chartResponse.getChart().getResult().getFirst().getTimestamp();
         List<Double> prices = chartResponse.getChart().getResult().getFirst().getIndicators().getQuote().getFirst().getClose();
 
@@ -64,5 +68,9 @@ public class YahooMapper {
 
     private String getCurrencyCodeFromShortName(String shortName) {
         return shortName.split("/")[0];
+    }
+
+    private String getCryptoCodeFromSymbol(String symbol) {
+        return symbol.split("-")[0];
     }
 }
