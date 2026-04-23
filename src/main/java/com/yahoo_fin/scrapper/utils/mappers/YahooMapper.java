@@ -3,6 +3,7 @@ package com.yahoo_fin.scrapper.utils.mappers;
 import com.yahoo_fin.scrapper.types.MonetaryValue;
 import com.yahoo_fin.scrapper.types.PriceResponse;
 import com.yahoo_fin.scrapper.types.yahoo.ChartResponse;
+import lombok.Getter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YahooMapper {
+    @Getter
     public enum InstrumentType {
         EQUITY("EQUITY"),
         CURRENCY("CURRENCY"),
@@ -22,9 +24,6 @@ public class YahooMapper {
             this.value = value;
         }
 
-        public String getValue() {
-            return value;
-        }
     }
 
     public List<PriceResponse> toPriceResponse(ChartResponse chartResponse){
