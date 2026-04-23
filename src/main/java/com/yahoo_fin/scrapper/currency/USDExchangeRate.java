@@ -30,10 +30,6 @@ public class USDExchangeRate {
 
     public USDExchangeRate() {}
 
-    public double getRateInteger() {
-        return rateInteger;
-    }
-
     public USDExchangeRate(double rateInteger, LocalDateTime timestamp, Currency currency) {
         this.rateInteger = rateInteger;
         this.timestamp = timestamp;

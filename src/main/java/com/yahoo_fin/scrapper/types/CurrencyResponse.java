@@ -1,8 +1,13 @@
 package com.yahoo_fin.scrapper.types;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 
+@Getter
+@Setter
 public class CurrencyResponse {
     private final String currencyName;
     private final String currencyCode;

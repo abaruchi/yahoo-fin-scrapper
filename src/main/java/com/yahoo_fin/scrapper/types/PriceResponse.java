@@ -1,7 +1,10 @@
 package com.yahoo_fin.scrapper.types;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class PriceResponse {
     private final String dataSource;
     private final MonetaryValue price;
@@ -25,13 +28,6 @@ public class PriceResponse {
         this.assetName = assetName;
         this.timestamp = LocalDateTime.now();
     }
-
-    public String getDataSource() { return dataSource; }
-    public MonetaryValue getPrice() { return price; }
-    public String getAssetCode() { return assetCode; }
-    public String getAssetName() { return assetName; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public boolean isClose() { return isClose; }
 
     public void setClose(boolean isClose) {
         this.isClose = isClose;
