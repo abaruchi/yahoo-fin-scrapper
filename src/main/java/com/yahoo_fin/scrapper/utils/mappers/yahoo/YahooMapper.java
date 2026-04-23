@@ -1,9 +1,10 @@
-package com.yahoo_fin.scrapper.utils.mappers;
+package com.yahoo_fin.scrapper.utils.mappers.yahoo;
 
 import com.yahoo_fin.scrapper.types.MonetaryValue;
 import com.yahoo_fin.scrapper.types.PriceResponse;
 import com.yahoo_fin.scrapper.types.yahoo.ChartResponse;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Component
 public class YahooMapper {
     @Getter
     public enum InstrumentType {
