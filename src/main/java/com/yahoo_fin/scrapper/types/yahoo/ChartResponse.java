@@ -18,6 +18,7 @@ public class ChartResponse {
         private String longName;
         private String shortName;
         private String instrumentType;
+        private String symbol;
     }
 
     @Data

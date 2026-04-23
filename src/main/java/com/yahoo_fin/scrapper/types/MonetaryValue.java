@@ -1,10 +1,16 @@
 package com.yahoo_fin.scrapper.types;
 
+import lombok.Getter;
+
 import java.util.Locale;
 
 public class MonetaryValue {
+    @Getter
     private final int normalisedValue;
+
+    @Getter
     private final double rawValue;
+
     private final Locale currLocale = java.util.Locale.US;
     private final int powerOfTen = 2;
 
@@ -20,14 +26,6 @@ public class MonetaryValue {
             throw new IllegalArgumentException("Invalid monetary value format: " + sValue, e);
         }
         this.normalisedValue = (int) (this.rawValue * Math.pow(10, powerOfTen));
-    }
-
-    public double getRawValue() {
-        return rawValue;
-    }
-
-    public int getNormalisedValue() {
-        return normalisedValue;
     }
 
     public String toString() {

@@ -122,8 +122,9 @@ class YahooMapperTest {
                                 "result": [
                                   {
                                     "meta": {
-                                      "longName": "BitCoin",
-                                      "shortName": "BTC-US",
+                                      "longName": "Bitcoin USD",
+                                      "shortName": "Bitcoin USD",
+                                      "symbol": "BTC-US",
                                       "instrumentType": "CRYPTOCURRENCY"
                                     },
                                     "timestamp": [1761001200,1761087600,1761174000],
@@ -142,7 +143,7 @@ class YahooMapperTest {
         ChartResponse chartResponse = objectMapper.readValue(yahooResponse, ChartResponse.class);
         List<PriceResponse> priceResponse = yahooMapper.toPriceResponse(chartResponse);
         assertEquals(3, priceResponse.size());
-        assertEquals("BTC-US", priceResponse.get(2).getAssetCode());
+        assertEquals("BTC", priceResponse.get(2).getAssetCode());
         assertEquals("CRYPTOCURRENCY", priceResponse.get(2).getAssetName());
         assertEquals("2025-10-22T23:00", priceResponse.get(2).getTimestamp().toString());
         assertEquals(181.20, priceResponse.get(2).getPrice().getRawValue());
