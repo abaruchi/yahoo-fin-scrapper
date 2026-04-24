@@ -13,4 +13,8 @@ public interface USDExchangeRateRepository extends JpaRepository<USDExchangeRate
     Optional<USDExchangeRate> findFirstByCurrencyOrderByTimestampDesc(Currency currency);
     Optional<USDExchangeRate> findFirstByCurrencyAndTimestamp(Currency currency, LocalDateTime timestamp);
     Optional<USDExchangeRate> findMaxByCurrency(Currency currency);
+    Integer countByCurrency(Currency currency);
+    Integer countByCurrencyAndTimestampLessThanEqual(Currency currency, LocalDateTime timestamp);
+    Integer countByCurrencyAndTimestamp(Currency currency, LocalDateTime timestamp);
+    Integer countByCurrencyAndTimestampGreaterThan(Currency currency, LocalDateTime timestamp);
 }

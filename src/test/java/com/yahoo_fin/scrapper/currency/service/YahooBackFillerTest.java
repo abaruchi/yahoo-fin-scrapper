@@ -1,11 +1,14 @@
 package com.yahoo_fin.scrapper.currency.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yahoo_fin.scrapper.currency.Currency;
 import com.yahoo_fin.scrapper.currency.CurrencyRepository;
 import com.yahoo_fin.scrapper.currency.USDExchangeRate;
 import com.yahoo_fin.scrapper.currency.USDExchangeRateRepository;
 import com.yahoo_fin.scrapper.market.Country;
 import com.yahoo_fin.scrapper.market.CountryRepository;
+import com.yahoo_fin.scrapper.types.records.CurrencyRefill;
 import com.yahoo_fin.scrapper.types.yahoo.ChartResponse;
 import com.yahoo_fin.scrapper.utils.mappers.yahoo.FakeYahooDataFetcher;
 import com.yahoo_fin.scrapper.utils.mappers.yahoo.YahooMapper;
@@ -34,6 +37,8 @@ class YahooBackFillerTest {
 
     @Autowired
     private CountryRepository countryRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     Country fakeCountry01 = new Country("FakeCountry 01", "FKC01");
     Country fakeCountry02 = new Country("FakeCountry 02", "FKC02");
@@ -84,5 +89,94 @@ class YahooBackFillerTest {
         YahooBackFiller yahooBackFiller = new YahooBackFiller(yahooMapper, fakeYahooDataFetcher, exchangeRateRepository);
         USDExchangeRate newestRecord = yahooBackFiller.getNewestRecord(currency_fk01);
         assertEquals(LocalDateTime.MIN, newestRecord.getTimestamp());
+    }
+
+    @Test
+    void fetchAndSaveExchangeRateFirstTime() throws JsonProcessingException {
+        Currency currency_fk01 = new Currency("FakeCountry 01", "FKC01", fakeCountry01);
+        currencyRepository.save(currency_fk01);
+
+        String yahooResponse = """
+                {
+                  "chart": {
+                    "result": [
+                      {
+                        "meta": {
+                          "longName": "FKC01/USD",
+                          "shortName": "FKC01/USD",
+                          "instrumentType": "CURRENCY",
+                          "symbol": "FKC01USD=X"
+                        },
+                        "timestamp": [1776211200, 1778803200, 1781481600, null, 1784073600, 1786752000, 1789430400],
+                        "indicators": {
+                          "quote": [
+                            {
+                              "close": [180.5, 182.1, 180.5, null, 182.1, 180.5, 182.1]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+                """;
+        ChartResponse chartResponse = objectMapper.readValue(yahooResponse, ChartResponse.class);
+        FakeYahooDataFetcher fakeYahooDataFetcher = new FakeYahooDataFetcher(chartResponse);
+        YahooBackFiller yahooBackFiller = new YahooBackFiller(yahooMapper, fakeYahooDataFetcher, exchangeRateRepository);
+
+        CurrencyRefill currencyRefill = yahooBackFiller.runBackfill(currentDate, currentDate.minusMonths(6), currency_fk01);
+        assertEquals(5, currencyRefill.storedRecords());
+        assertEquals("FKC01", currencyRefill.currencyCode());
+
+        int numberOfRecordsStored = exchangeRateRepository.countByCurrency(currency_fk01);
+        assertEquals(5, numberOfRecordsStored);
+    }
+
+    @Test
+    void fetchAndSaveExchangeRateSecondTime() throws JsonProcessingException {
+        Currency currency_fk01 = new Currency("FakeCountry 01", "FKC01", fakeCountry01);
+        currencyRepository.save(currency_fk01);
+
+        exchangeRateRepository.saveAll(List.of(
+                new USDExchangeRate(1500, currentDate.minusMonths(10), currency_fk01),
+                new USDExchangeRate(1420, currentDate.minusMonths(9), currency_fk01),
+                new USDExchangeRate(1425, currentDate.minusMonths(4), currency_fk01)
+        ));
+
+        // Note that we are returning two records before the default cut date (6 months) - 1776124800 and 1776211200
+        String yahooResponse = """
+                {
+                  "chart": {
+                    "result": [
+                      {
+                        "meta": {
+                          "longName": "FKC01/USD",
+                          "shortName": "FKC01/USD",
+                          "instrumentType": "CURRENCY",
+                          "symbol": "FKC01USD=X"
+                        },
+                        "timestamp": [1776124800, 1776211200, 1778803200, 1781481600, null, 1784073600, 1786752000, 1789430400],
+                        "indicators": {
+                          "quote": [
+                            {
+                              "close": [180.5, 180.5, 182.1, 180.5, null, 182.1, 180.5, 182.1]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+                """;
+        ChartResponse chartResponse = objectMapper.readValue(yahooResponse, ChartResponse.class);
+        FakeYahooDataFetcher fakeYahooDataFetcher = new FakeYahooDataFetcher(chartResponse);
+        YahooBackFiller yahooBackFiller = new YahooBackFiller(yahooMapper, fakeYahooDataFetcher, exchangeRateRepository);
+
+        CurrencyRefill currencyRefill = yahooBackFiller.runBackfill(currentDate, currentDate.minusMonths(6), currency_fk01);
+        assertEquals(5, currencyRefill.storedRecords());
+        assertEquals("FKC01", currencyRefill.currencyCode());
+
+        int numberOfRecordsStored = exchangeRateRepository.countByCurrencyAndTimestampGreaterThan(currency_fk01, currentDate.minusMonths(6));
+        assertEquals(6, numberOfRecordsStored);
     }
 }

@@ -178,5 +178,5 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,java,intellij+all,database,macos
-/.env
+/src/.env.properties
 /.junie/*
