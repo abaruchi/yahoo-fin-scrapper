@@ -37,11 +37,9 @@ public class YahooBackFiller implements CurrencyBackfiller{
 
     @Override
     public CurrencyRefill runBackfill(LocalDateTime currentDateTime, LocalDateTime sinceDateTime, Currency currency) {
-        int cutOffMonths = 6;
-        LocalDateTime sinceDateTarget = sinceDateTime;
-        if (sinceDateTime.isBefore(currentDateTime.minusMonths(cutOffMonths))) {
-            sinceDateTarget = currentDateTime.minusMonths(cutOffMonths);
-        }
+        LocalDateTime maxAllowedBackFillDate = currentDateTime.minusMonths(6);
+        LocalDateTime cutDate = sinceDateTime.isBefore(maxAllowedBackFillDate) ? maxAllowedBackFillDate : sinceDateTime;
+
         String symbol = buildYahooSymbol(currency);
         ChartResponse chartResponse = yahooDataFetcher.getStockPricePreviousSixMonths(symbol);
         List<PriceResponse> exchangeRateResponsesToSave = yahooMapper.toPriceResponse(chartResponse);
@@ -49,7 +47,7 @@ public class YahooBackFiller implements CurrencyBackfiller{
 
         return new CurrencyRefill(
                 currency.getCode(),
-                saveExchangeRate(exchangeRateList, sinceDateTarget));
+                saveExchangeRate(exchangeRateList, cutDate));
     }
 
     private int saveExchangeRate(List<USDExchangeRate> exchangeRateToSave, LocalDateTime dateLimit) {

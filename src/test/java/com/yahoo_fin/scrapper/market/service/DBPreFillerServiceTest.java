@@ -1,6 +1,7 @@
 package com.yahoo_fin.scrapper.market.service;
 
 import com.yahoo_fin.scrapper.AppProperties;
+import com.yahoo_fin.scrapper.currency.CurrencyRepository;
 import com.yahoo_fin.scrapper.market.Country;
 import com.yahoo_fin.scrapper.market.CountryRepository;
 import com.yahoo_fin.scrapper.market.Market;
@@ -38,9 +39,12 @@ class DBPreFillerServiceTest {
     @Autowired
     private AppProperties appProperties;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     @Test
     void populateCountryAndMarketTableWithEmptyData() {
-        DBPreFillerService dbPreFillerService = new DBPreFillerService(countryRepository, marketRepository, appProperties);
+        DBPreFillerService dbPreFillerService = new DBPreFillerService(countryRepository, marketRepository, appProperties, currencyRepository);
         dbPreFillerService.populateCountryAndMarketTables();
 
         List<Country> countries = countryRepository.findAll();
@@ -52,7 +56,7 @@ class DBPreFillerServiceTest {
 
     @Test
     void populateCountryAndMarketTableWithExistingData() {
-        DBPreFillerService dbPreFillerService = new DBPreFillerService(countryRepository, marketRepository, appProperties);
+        DBPreFillerService dbPreFillerService = new DBPreFillerService(countryRepository, marketRepository, appProperties, currencyRepository);
         dbPreFillerService.populateCountryAndMarketTables();
         dbPreFillerService.populateCountryAndMarketTables();
 

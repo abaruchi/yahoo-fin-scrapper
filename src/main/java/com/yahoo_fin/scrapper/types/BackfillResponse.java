@@ -17,8 +17,13 @@ public class BackfillResponse {
     @Data
     public static class CurrencyBackfillInfo {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-
         private LocalDateTime mostRecentRecordTs;
+
         private int recordsToRefill;
+
+        public CurrencyBackfillInfo(LocalDateTime timestamp, Integer integer) {
+            this.mostRecentRecordTs = timestamp;
+            this.recordsToRefill = integer;
+        }
     }
 }
