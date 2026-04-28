@@ -2,10 +2,12 @@ package com.yahoo_fin.scrapper.market.service;
 
 import com.yahoo_fin.scrapper.AppProperties;
 import com.yahoo_fin.scrapper.currency.CurrencyRepository;
+import com.yahoo_fin.scrapper.currency.USDExchangeRateRepository;
 import com.yahoo_fin.scrapper.market.Country;
 import com.yahoo_fin.scrapper.market.CountryRepository;
 import com.yahoo_fin.scrapper.market.Market;
 import com.yahoo_fin.scrapper.market.MarketRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,6 +43,17 @@ class DBPreFillerServiceTest {
 
     @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private USDExchangeRateRepository uSDExchangeRateRepository;
+
+    @BeforeEach
+    void setUp() {
+        uSDExchangeRateRepository.deleteAll();
+        currencyRepository.deleteAll();
+        marketRepository.deleteAll();
+        countryRepository.deleteAll();
+    }
 
     @Test
     void populateCountryAndMarketTableWithEmptyData() {
